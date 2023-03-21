@@ -21,7 +21,12 @@ export const Header = () => {
 
 	return (
 		<>
-			<Container maxW={"8xl"} paddingBottom='8' paddingTop={"8"} as={"header"}>
+			<Container
+				maxW={"8xl"}
+				zIndex={"overlay"}
+				paddingBottom='8'
+				paddingTop={"8"}
+				as={"header"}>
 				<HStack
 					justifyContent={"space-between"}
 					as={"nav"}
@@ -37,10 +42,7 @@ export const Header = () => {
 						/>
 					</Box>
 
-					<Flex
-						zIndex={"overlay"}
-						gap={{ base: "0", md: "2.5rem" }}
-						align={"center"}>
+					<Flex gap={{ base: "0", md: "2.5rem" }} align={"center"}>
 						<Flex gap={"16px"} align={"center"}>
 							<Heading
 								fontSize={"24px"}
@@ -63,13 +65,9 @@ export const Header = () => {
 						</Flex>
 						<Button
 							onClick={onOpen}
-							alignItems={"center"}
-							justifyContent='center'
-							display={"flex"}
 							fontWeight={"bold"}
-							paddingTop='auto'
-							size={{ sm: "lg", base: "md" }}
-							pb='auto'>
+							variant={"custom"}
+							size={{ sm: "lg", base: "md" }}>
 							Позвоним бесплатно
 						</Button>
 						<ModalPage onClose={onClose} isOpen={isOpen} />

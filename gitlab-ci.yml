@@ -1,0 +1,21 @@
+default:
+  tags:
+    - cars
+
+stages:
+  - build
+  - deploy
+
+
+build_prod:
+  stage: build
+  script: yarn build
+
+deploy_prod:
+  stage: production
+  script: make deploy
+  environment:
+    name: staging
+    url: https://car.genshin-easy.ru/
+  only:
+    - main

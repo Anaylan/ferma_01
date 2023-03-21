@@ -17,6 +17,7 @@ import MaskedInput from "react-text-mask";
 import { mainPageValidationSchema } from "@/lib/validSchemas";
 import { Header } from "@/components/Header";
 import { Link } from "react-router-dom";
+import { TooltipError } from "@/components/Tooltip";
 
 const Home: FC = () => {
 	const formik = useFormik({
@@ -37,7 +38,7 @@ const Home: FC = () => {
 			<Container
 				as={"section"}
 				maxW={"8xl"}
-				marginTop={{ base: "16", lg: "4%" }}
+				marginTop={{ base: "10", lg: "4%" }}
 				color={"white"}>
 				<Box maxW={{ md: "max-content", base: "100%" }}>
 					<Heading
@@ -69,52 +70,54 @@ const Home: FC = () => {
 								gap={"1rem"}
 								display={"flex"}
 								flexDirection={"column"}>
-								<Box>
-									<Input
-										name='who'
-										size={{ sm: "lg", base: "md" }}
-										value={formik.values.who}
-										onChange={formik.handleChange}
-										color='#ffff'
-										borderColor={
-											formik.errors.who ? "red !important" : undefined
-										}
-										placeholder='Представьтесь'
-										type='text'
-									/>
-									{formik.errors.who && (
-										<Text fontSize={"15px"} fontWeight='regular'>
-											{formik.errors.who}
-										</Text>
-									)}
-								</Box>
-								<Box>
-									<Input
-										as={MaskedInput}
-										mask={phoneMask}
-										name='phone'
-										size={{ sm: "lg", base: "md" }}
-										placeholder='Номер вашего телефона'
-										type='tel'
-										borderColor={
-											formik.errors.phone ? "red !important" : undefined
-										}
-										value={formik.values.phone}
-										onChange={formik.handleChange}
-									/>
-									{formik.errors.phone && (
-										<Text fontSize={"15px"} fontWeight='regular'>
-											{formik.errors.phone}
-										</Text>
-									)}
-								</Box>
+								<TooltipError
+									hasArrow
+									label={formik.errors.who}
+									isOpen={formik.errors.who != ""}>
+									<Box>
+										<Input
+											name='who'
+											size={{ sm: "lg", base: "md" }}
+											value={formik.values.who}
+											onChange={formik.handleChange}
+											color='#ffff'
+											borderColor={
+												formik.errors.who ? "red !important" : undefined
+											}
+											placeholder='Представьтесь'
+											type='text'
+										/>
+									</Box>
+								</TooltipError>
+								<TooltipError
+									hasArrow
+									label={formik.errors.phone}
+									isOpen={formik.errors.phone != ""}>
+									<Box>
+										<Input
+											as={MaskedInput}
+											mask={phoneMask}
+											name='phone'
+											size={{ sm: "lg", base: "md" }}
+											placeholder='Номер вашего телефона'
+											type='tel'
+											borderColor={
+												formik.errors.phone ? "red !important" : undefined
+											}
+											value={formik.values.phone}
+											onChange={formik.handleChange}
+										/>
+									</Box>
+								</TooltipError>
+
 								<Button
 									type='submit'
+									variant={"custom"}
 									size={{ sm: "lg", base: "md" }}
 									color={"#001549"}>
 									Получить
 								</Button>
-								<Text fontSize={{ xl: "15px", base: "12px" }}>
+								<Text fontSize={{ xl: "15px", base: "12px" }} opacity='0.8'>
 									Нажимая кнопку «Получить», вы соглашаетесь «
 									<Link
 										style={{

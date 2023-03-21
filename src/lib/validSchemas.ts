@@ -7,5 +7,6 @@ export const mainPageValidationSchema = Yup.object().shape({
 	phone: Yup.string()
 		.min(16, "Номер телефона слишком короткий")
 		.max(16, "Номер телефона слишком длинный")
-		.required("Введите номер телефона"),
+		.length(16, "Номер телефона должен иметь 11 символов")
+		.required("Введите номер телефона!"),
 });

@@ -24,10 +24,19 @@ const Privacy: FC = () => {
 					maxW={"8xl"}
 					maxH='full'
 					color={"black !important"}>
-					<Heading lineHeight={"120%"} mb={"1.77rem"}>
+					<Heading
+						fontSize={{
+							base: "21px",
+							sm: "28px",
+							lg: "32px",
+							xl: "40px",
+						}}
+						whiteSpace='nowrap'
+						lineHeight={"120%"}
+						mb={"1.77rem"}>
 						Политика конфиденциальности
 					</Heading>
-					<Box>
+					<Box fontSize={{ xl: "1rem", base: "1.1rem" }}>
 						<strong>1. Общие положения</strong>
 						<OrderedList marginY={"2"} ml='7'>
 							<ListItem>

@@ -1,7 +1,20 @@
-import { defineStyleConfig } from "@chakra-ui/react";
+import { defineStyle, defineStyleConfig } from "@chakra-ui/react";
+
+const customVariant = defineStyle((props) => {
+	const { colorScheme: c } = props;
+	return {
+		background: "#FFFFFF",
+		_hover: {
+			background: "#E7CE1C",
+		},
+	};
+});
 
 export const Button = defineStyleConfig({
 	baseStyle: {
-		borderRadius: "xl", // <-- border radius is same for all variants and sizes
+		borderRadius: "xl",
+	},
+	variants: {
+		custom: customVariant,
 	},
 });
