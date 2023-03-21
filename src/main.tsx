@@ -26,7 +26,7 @@ const theme = extendTheme({
 				minHeight: "100vh",
 				display: "flex",
 				flexDirection: "column",
-				backgroundImage: "/bg.png",
+				backgroundImage: "/bg.webp",
 				backgroundRepeat: "no-repeat",
 				backgroundSize: "cover",
 				backgroundPosition: "center",
@@ -45,9 +45,11 @@ const theme = extendTheme({
 const root = createRoot(document.getElementById("root") as HTMLElement);
 
 root.render(
-	<React.StrictMode>
-		<ChakraProvider theme={theme}>
-			<App />
-		</ChakraProvider>
-	</React.StrictMode>
+	<>
+		<React.StrictMode>
+			<ChakraProvider theme={theme}>
+				<App />
+			</ChakraProvider>
+		</React.StrictMode>
+	</>
 );

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, Fragment } from "react";
 
 import {
 	Box,
@@ -8,80 +8,155 @@ import {
 	Heading,
 	Input,
 	VStack,
+	Text,
+	Spinner,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
+import { phoneMask } from "@/lib/masks";
+import MaskedInput from "react-text-mask";
+import { mainPageValidationSchema } from "@/lib/validSchemas";
+import { Header } from "@/components/Header";
+import { Link } from "react-router-dom";
 
-export const Home: FC = () => {
+const Home: FC = () => {
 	const formik = useFormik({
 		initialValues: {
 			who: "",
 			phone: "",
 		},
+		validationSchema: mainPageValidationSchema,
 		onSubmit: (values) => {
 			console.log(values);
 			alert(JSON.stringify(values, null, 2));
 		},
 	});
-
+	document.title = "Связаться с нами | Ferma";
 	return (
-		<Container
-			maxW={"8xl"}
-			marginTop={{ base: "16", lg: "40" }}
-			color={"white"}>
-			<Box maxW={{ md: "max-content", base: "100%" }}>
-				<Heading
-					lineHeight={"110%"}
-					fontSize={{ base: "36px", sm: "48px", md: "80px" }}>
-					Приведем заявки
-					<br />
-					для автосервиса
-					<br />
-					из Яндекс Директ!
-				</Heading>
+		<Fragment>
+			<Header />
+			<Container
+				as={"section"}
+				maxW={"8xl"}
+				marginTop={{ base: "16", lg: "4%" }}
+				color={"white"}>
+				<Box maxW={{ md: "max-content", base: "100%" }}>
+					<Heading
+						lineHeight={"110%"}
+						as='h1'
+						fontSize={{ base: "36px", sm: "48px", xl: "80px" }}>
+						Приведем заявки
+						<br />
+						для автосервиса
+						<br />
+						из Яндекс Директ!
+					</Heading>
 
-				<form onSubmit={formik.handleSubmit}>
-					<VStack maxW={"85%"} alignItems={"flex-start"} marginTop={"8"}>
-						<Heading
-							textAlign={"left"}
-							lineHeight={"40px"}
-							fontSize={{ base: "18px", sm: "24px", md: "40px" }}>
-							Получите медиаплан
-							<br />
-							для продвижения автобизнеса
-						</Heading>
+					<form onSubmit={formik.handleSubmit}>
+						<VStack
+							maxW={{ xl: "85%", base: "100%" }}
+							alignItems={"flex-start"}
+							marginTop={"8"}>
+							<Heading
+								textAlign={"left"}
+								fontSize={{ base: "18px", sm: "24px", md: "40px" }}>
+								Получите медиаплан
+								<br />
+								для продвижения автобизнеса
+							</Heading>
 
-						<FormControl
-							marginTop={"4"}
-							gap={"1rem"}
-							display={"flex"}
-							flexDirection={"column"}>
-							<Input
-								name='who'
-								value={formik.values.who}
-								onChange={formik.handleChange}
-								// colorScheme={""}
-								color='#ffff'
-								borderRadius={"xl"}
-								placeholder='Представьтесь'
-								type='text'
-							/>
-							<Input
-								name='phone'
-								value={formik.values.phone}
-								onChange={formik.handleChange}
-								// colorScheme={""}
-								color='#ffff'
-								borderRadius={"xl"}
-								placeholder='Номер вашего телефона'
-								type='text'
-							/>
-							<Button type='submit' color={"#001549"}>
-								Получить
-							</Button>
-						</FormControl>
-					</VStack>
-				</form>
-			</Box>
-		</Container>
+							<FormControl
+								marginTop={"4"}
+								gap={"1rem"}
+								display={"flex"}
+								flexDirection={"column"}>
+								<Box>
+									<Input
+										name='who'
+										size={{ sm: "lg", base: "md" }}
+										value={formik.values.who}
+										onChange={formik.handleChange}
+										color='#ffff'
+										borderColor={
+											formik.errors.who ? "red !important" : undefined
+										}
+										placeholder='Представьтесь'
+										type='text'
+									/>
+									{formik.errors.who && (
+										<Text fontSize={"15px"} fontWeight='regular'>
+											{formik.errors.who}
+										</Text>
+									)}
+								</Box>
+								<Box>
+									<Input
+										as={MaskedInput}
+										mask={phoneMask}
+										name='phone'
+										size={{ sm: "lg", base: "md" }}
+										placeholder='Номер вашего телефона'
+										type='tel'
+										borderColor={
+											formik.errors.phone ? "red !important" : undefined
+										}
+										value={formik.values.phone}
+										onChange={formik.handleChange}
+									/>
+									{formik.errors.phone && (
+										<Text fontSize={"15px"} fontWeight='regular'>
+											{formik.errors.phone}
+										</Text>
+									)}
+								</Box>
+								<Button
+									type='submit'
+									size={{ sm: "lg", base: "md" }}
+									color={"#001549"}>
+									Получить
+								</Button>
+								<Text fontSize={{ xl: "15px", base: "12px" }}>
+									Нажимая кнопку «Получить», вы соглашаетесь «
+									<Link
+										style={{
+											textDecoration: "underline",
+										}}
+										to='/privacy'>
+										Политикой конфиденциальности
+									</Link>
+									»
+								</Text>
+							</FormControl>
+						</VStack>
+					</form>
+				</Box>
+			</Container>
+			<Box
+				as='footer'
+				marginTop={{ base: "-15%", lg: "0" }}
+				_after={{
+					backgroundImage: "/car.webp",
+					backgroundRepeat: "no-repeat",
+					backgroundSize: "100%",
+					backgroundPosition: "bottom right",
+					position: { base: "relative", lg: "absolute" },
+					display: "block",
+					content: '""',
+					marginLeft: "auto",
+					marginRight: { base: "0", md: "-20%", lg: "0" },
+					marginTop: { base: "auto", lg: "0" },
+					marginBottom: 0,
+					width: {
+						base: "100%",
+						// md: "50%",
+						lg: "55%",
+						xl: "50%",
+					},
+					aspectRatio: "1",
+					bottom: "0",
+					right: { base: "-20%", xl: "0" },
+				}}
+			/>
+		</Fragment>
 	);
 };
+export default Home;

@@ -1,23 +1,23 @@
-import { defineStyleConfig } from "@chakra-ui/react";
+import { inputAnatomy } from "@chakra-ui/anatomy";
+import { createMultiStyleConfigHelpers } from "@chakra-ui/react";
 
-export const Input = defineStyleConfig({
-	// The styles all button have in common
-	baseStyle: {
-		field: {
-			borderRadius: "xl", // <-- border radius is same for all variants and sizes
-		},
-		addon: {
-			borderRadius: "xl",
-		},
-		element: {
-			borderRadius: "xl",
-		},
+const { definePartsStyle, defineMultiStyleConfig } =
+	createMultiStyleConfigHelpers(inputAnatomy.keys);
+
+const baseStyle = definePartsStyle({
+	// define the part you're going to style
+	field: {
+		borderRadius: "xl !important",
+		size: { sm: "lg", base: "md" },
 	},
-	sizes: {
-		base: {
-			field: {
-				borderRadius: "xl", // <-- border radius is same for all variants and sizes
-			},
-		},
+	addon: {
+		borderRadius: "xl !important",
+		size: { sm: "lg", base: "md" },
+	},
+	element: {
+		borderRadius: "xl !important",
+		size: { sm: "lg", base: "md" },
 	},
 });
+
+export const Input = defineMultiStyleConfig({ baseStyle });
