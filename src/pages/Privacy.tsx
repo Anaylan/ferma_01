@@ -21,7 +21,6 @@ const Privacy: FC = () => {
 				<Container
 					as={"section"}
 					paddingTop='2rem'
-					maxW={"8xl"}
 					maxH='full'
 					color={"black !important"}>
 					<Heading

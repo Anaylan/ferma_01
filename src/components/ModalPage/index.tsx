@@ -1,9 +1,9 @@
 import { phoneMask } from "@/lib/masks";
 import { mainPageValidationSchema } from "@/lib/validSchemas";
+import { instance } from "@/utils/axios";
 import {
 	Box,
 	Button,
-	Container,
 	FormControl,
 	Input,
 	Modal,
@@ -13,7 +13,7 @@ import {
 	ModalHeader,
 	ModalOverlay,
 	Text,
-	Tooltip,
+	useToast,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { Link } from "react-router-dom";
@@ -27,6 +27,8 @@ export const ModalPage = ({
 	isOpen: boolean;
 	onClose: () => void;
 }) => {
+	const toast = useToast();
+
 	const formik = useFormik({
 		initialValues: {
 			who: "",
@@ -34,10 +36,30 @@ export const ModalPage = ({
 		},
 		validationSchema: mainPageValidationSchema,
 		onSubmit: (values) => {
-			console.log(values);
-			alert(JSON.stringify(values, null, 2));
-
-			onClose();
+			instance
+				.get(`/index.php?module=API&method=Leads.addReport&format=json`, {
+					params: { ...values },
+				})
+				.then(() => {
+					toast({
+						position: "bottom-left",
+						status: "success",
+						isClosable: true,
+						title: "Заявка успешно отправлена",
+						description: "Ожидайте звонка",
+					});
+					formik.resetForm();
+					onClose();
+				})
+				.catch(() => {
+					toast({
+						position: "bottom-left",
+						status: "error",
+						isClosable: true,
+						title: "Возникла ошибка",
+						description: "Что-то пошло не так, попробуйте позже",
+					});
+				});
 		},
 	});
 	return (
@@ -50,19 +72,17 @@ export const ModalPage = ({
 			<ModalContent
 				marginInline={"4"}
 				borderRadius={"xl"}
-				maxW={"max-content"}
-				width='100%'>
+				maxW='100%'
+				width={{ md: "min", base: "100%" }}>
 				<ModalCloseButton size={"md"} />
-				<Container paddingBottom='8'>
-					<ModalHeader
-						paddingBottom={"0"}
-						paddingTop='10'
-						fontSize={"32px"}
-						lineHeight={"32px"}>
-						Оставьте свои данные и мы свяжемся с вами для бесплатной
-						консультации
-					</ModalHeader>
-
+				<ModalHeader
+					paddingBottom={"0"}
+					paddingTop='10'
+					fontSize={{ sm: "32px", base: "20px" }}
+					lineHeight={"32px"}>
+					Оставьте свои данные и мы свяжемся с вами для бесплатной консультации
+				</ModalHeader>
+				<Box minW={{ md: "max-content", base: "" }} paddingBottom='8'>
 					<ModalBody>
 						<form onSubmit={formik.handleSubmit}>
 							<FormControl
@@ -70,10 +90,7 @@ export const ModalPage = ({
 								gap={"1rem"}
 								display={"flex"}
 								flexDirection={"column"}>
-								<TooltipError
-									hasArrow
-									label={formik.errors.who}
-									isOpen={formik.errors.who != ""}>
+								<TooltipError hasArrow label={formik.errors.who}>
 									<Box>
 										<Input
 											name='who'
@@ -91,10 +108,7 @@ export const ModalPage = ({
 									</Box>
 								</TooltipError>
 
-								<TooltipError
-									hasArrow
-									label={formik.errors.phone}
-									isOpen={formik.errors.phone != ""}>
+								<TooltipError hasArrow label={formik.errors.phone}>
 									<Box>
 										<Input
 											as={MaskedInput}
@@ -147,7 +161,7 @@ export const ModalPage = ({
 							</FormControl>
 						</form>
 					</ModalBody>
-				</Container>
+				</Box>
 			</ModalContent>
 		</Modal>
 	);

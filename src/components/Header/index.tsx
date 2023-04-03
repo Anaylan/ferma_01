@@ -13,7 +13,6 @@ import logo from "@/assets/svg/logo.svg";
 
 import { ModalPage } from "../ModalPage";
 import { useNavigate } from "react-router";
-import { Suspense } from "react";
 
 export const Header = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -22,7 +21,6 @@ export const Header = () => {
 	return (
 		<>
 			<Container
-				maxW={"8xl"}
 				zIndex={"overlay"}
 				paddingBottom='8'
 				paddingTop={"8"}

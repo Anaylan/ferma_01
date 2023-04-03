@@ -9,8 +9,9 @@ import {
 	Input,
 	VStack,
 	Text,
-	Spinner,
+	useToast,
 } from "@chakra-ui/react";
+
 import { useFormik } from "formik";
 import { phoneMask } from "@/lib/masks";
 import MaskedInput from "react-text-mask";
@@ -19,7 +20,11 @@ import { Header } from "@/components/Header";
 import { Link } from "react-router-dom";
 import { TooltipError } from "@/components/Tooltip";
 
+import { instance } from "@/utils/axios";
+
 const Home: FC = () => {
+	const toast = useToast();
+
 	const formik = useFormik({
 		initialValues: {
 			who: "",
@@ -27,24 +32,54 @@ const Home: FC = () => {
 		},
 		validationSchema: mainPageValidationSchema,
 		onSubmit: (values) => {
-			console.log(values);
-			alert(JSON.stringify(values, null, 2));
+			// console.log(values);
+
+			instance
+				.get(`/index.php?module=API&method=Leads.addReport&format=json`, {
+					params: { ...values },
+				})
+				.then(({ data }) => {
+					console.log(data);
+					toast({
+						position: "bottom",
+						status: "success",
+						isClosable: true,
+						title: "Заявка успешно отправлена",
+						description: "Заявка успешно отправлена, Ожидайте звонка",
+					});
+					formik.resetForm();
+				})
+				.catch((er: string) => {
+					console.error(er);
+					toast({
+						position: "bottom",
+						status: "error",
+						isClosable: true,
+						title: "Возникла ошибка",
+						description: "Что-то пошло не так, попробуйте позже",
+					});
+				});
 		},
 	});
-	document.title = "Связаться с нами | Ferma";
+	document.title = "Приведем заявки для автосервиса из Яндекс Директ";
 	return (
 		<Fragment>
 			<Header />
 			<Container
 				as={"section"}
-				maxW={"8xl"}
-				marginTop={{ base: "10", lg: "4%" }}
+				marginTop={{ base: "10", lg: "14" }}
 				color={"white"}>
-				<Box maxW={{ md: "max-content", base: "100%" }}>
+				<Box maxW={{ lg: "max-content", base: "100%" }}>
 					<Heading
-						lineHeight={"110%"}
+						lineHeight={"100%"}
 						as='h1'
-						fontSize={{ base: "36px", sm: "48px", xl: "80px" }}>
+						fontSize={{
+							base: "36px",
+							sm: "48px",
+							md: "44px",
+							xl: "54px",
+							"2xl": "80px",
+						}}>
 						Приведем заявки
 						<br />
 						для автосервиса
@@ -53,13 +88,16 @@ const Home: FC = () => {
 					</Heading>
 
 					<form onSubmit={formik.handleSubmit}>
-						<VStack
-							maxW={{ xl: "85%", base: "100%" }}
-							alignItems={"flex-start"}
-							marginTop={"8"}>
+						<VStack alignItems={"flex-start"} marginTop={"8"}>
 							<Heading
 								textAlign={"left"}
-								fontSize={{ base: "18px", sm: "24px", md: "40px" }}>
+								lineHeight='100%'
+								fontSize={{
+									base: "18px",
+									sm: "24px",
+									xl: "30px",
+									"2xl": "40px",
+								}}>
 								Получите медиаплан
 								<br />
 								для продвижения автобизнеса
@@ -70,10 +108,7 @@ const Home: FC = () => {
 								gap={"1rem"}
 								display={"flex"}
 								flexDirection={"column"}>
-								<TooltipError
-									hasArrow
-									label={formik.errors.who}
-									isOpen={formik.errors.who != ""}>
+								<TooltipError hasArrow label={formik.errors.who}>
 									<Box>
 										<Input
 											name='who'
@@ -89,10 +124,7 @@ const Home: FC = () => {
 										/>
 									</Box>
 								</TooltipError>
-								<TooltipError
-									hasArrow
-									label={formik.errors.phone}
-									isOpen={formik.errors.phone != ""}>
+								<TooltipError hasArrow label={formik.errors.phone}>
 									<Box>
 										<Input
 											as={MaskedInput}
@@ -117,7 +149,10 @@ const Home: FC = () => {
 									color={"#001549"}>
 									Получить
 								</Button>
-								<Text fontSize={{ xl: "15px", base: "12px" }} opacity='0.8'>
+								<Text
+									fontSize={{ "2xl": "15px", base: "12px" }}
+									zIndex={"modal"}
+									opacity='0.8'>
 									Нажимая кнопку «Получить», вы соглашаетесь «
 									<Link
 										style={{
@@ -135,6 +170,8 @@ const Home: FC = () => {
 			</Container>
 			<Box
 				as='footer'
+				flex={"1"}
+				display='flex'
 				marginTop={{ base: "-15%", lg: "0" }}
 				_after={{
 					backgroundImage: "/car.webp",
@@ -145,14 +182,14 @@ const Home: FC = () => {
 					display: "block",
 					content: '""',
 					marginLeft: "auto",
-					marginRight: { base: "0", md: "-20%", lg: "0" },
-					marginTop: { base: "auto", lg: "0" },
-					marginBottom: 0,
+					marginTop: { base: "auto", md: "0", lg: "0" },
+					marginBottom: { base: 0, lg: "-7%", "2xl": 0 },
 					width: {
 						base: "100%",
-						// md: "50%",
-						lg: "55%",
-						xl: "50%",
+						md: "100%",
+						lg: "65%",
+						xl: "55%",
+						"2xl": "50%",
 					},
 					aspectRatio: "1",
 					bottom: "0",
@@ -162,4 +199,5 @@ const Home: FC = () => {
 		</Fragment>
 	);
 };
+
 export default Home;

@@ -11,7 +11,7 @@ export default function ErrorBoundary() {
 		navigate("/", { replace: true });
 	};
 
-	if (isRouteErrorResponse(error) && error.status === 401) {
+	if (isRouteErrorResponse(error) && error.status === 404) {
 		// Uncaught ReferenceError: path is not defined
 		document.title = "404 | Страница не найдена";
 		return (

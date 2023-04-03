@@ -3,6 +3,8 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import { Button } from "@/components/Button";
+import { Container } from "@/components/Container";
+
 import { Input } from "@/components/Input";
 
 const theme = extendTheme({
@@ -39,6 +41,7 @@ const theme = extendTheme({
 	components: {
 		Input,
 		Button,
+		Container,
 	},
 });
 
