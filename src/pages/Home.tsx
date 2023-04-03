@@ -1,4 +1,4 @@
-import { FC, Fragment } from "react";
+import { FC, Fragment, useState } from "react";
 
 import {
 	Box,
@@ -24,7 +24,7 @@ import { instance } from "@/utils/axios";
 
 const Home: FC = () => {
 	const toast = useToast();
-
+	const [active, setDisabled] = useState<boolean>(false);
 	const formik = useFormik({
 		initialValues: {
 			who: "",
@@ -68,6 +68,7 @@ const Home: FC = () => {
 			<Container
 				as={"section"}
 				marginTop={{ base: "10", lg: "14" }}
+				flex={"1"}
 				color={"white"}>
 				<Box maxW={{ lg: "max-content", base: "100%" }}>
 					<Heading
@@ -88,15 +89,19 @@ const Home: FC = () => {
 					</Heading>
 
 					<form onSubmit={formik.handleSubmit}>
-						<VStack alignItems={"flex-start"} marginTop={"8"}>
+						<VStack
+							maxW={{ "2xl": "552px", xl: "476px", lg: "354px", base: "100%" }}
+							alignItems={"flex-start"}
+							spacing={"7"}
+							marginTop={"8"}>
 							<Heading
 								textAlign={"left"}
 								lineHeight='100%'
 								fontSize={{
 									base: "18px",
-									sm: "24px",
+									sm: "22px",
 									xl: "30px",
-									"2xl": "40px",
+									"2xl": "36px",
 								}}>
 								Получите медиаплан
 								<br />
@@ -104,7 +109,7 @@ const Home: FC = () => {
 							</Heading>
 
 							<FormControl
-								marginTop={"4"}
+								// marginTop={"4"}
 								gap={"1rem"}
 								display={"flex"}
 								flexDirection={"column"}>
@@ -146,6 +151,7 @@ const Home: FC = () => {
 									type='submit'
 									variant={"custom"}
 									size={{ sm: "lg", base: "md" }}
+									disabled={!active}
 									color={"#001549"}>
 									Получить
 								</Button>
@@ -170,7 +176,7 @@ const Home: FC = () => {
 			</Container>
 			<Box
 				as='footer'
-				flex={"1"}
+				// flex={"1"}
 				display='flex'
 				marginTop={{ base: "-15%", lg: "0" }}
 				_after={{

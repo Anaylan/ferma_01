@@ -19,6 +19,7 @@ import { useFormik } from "formik";
 import { Link } from "react-router-dom";
 import MaskedInput from "react-text-mask";
 import { TooltipError } from "../Tooltip";
+import { useState } from "react";
 
 export const ModalPage = ({
 	isOpen,
@@ -29,6 +30,8 @@ export const ModalPage = ({
 }) => {
 	const toast = useToast();
 
+	const [disabled, setDisabled] = useState<boolean>(true);
+
 	const formik = useFormik({
 		initialValues: {
 			who: "",
@@ -36,6 +39,7 @@ export const ModalPage = ({
 		},
 		validationSchema: mainPageValidationSchema,
 		onSubmit: (values) => {
+			formik.submitCount = 1;
 			instance
 				.get(`/index.php?module=API&method=Leads.addReport&format=json`, {
 					params: { ...values },
@@ -140,6 +144,7 @@ export const ModalPage = ({
 									_hover={{
 										background: "#002685",
 									}}
+									disabled={disabled}
 									mr={3}>
 									Заказать звонок
 								</Button>
