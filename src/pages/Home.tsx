@@ -12,7 +12,7 @@ import {
 	useToast,
 } from "@chakra-ui/react";
 
-import { useFormik } from "formik";
+import { Formik, useFormik } from "formik";
 import { phoneMask } from "@/lib/masks";
 import MaskedInput from "react-text-mask";
 import { mainPageValidationSchema } from "@/lib/validSchemas";
@@ -21,10 +21,11 @@ import { Link } from "react-router-dom";
 import { TooltipError } from "@/components/Tooltip";
 
 import { instance } from "@/utils/axios";
+import { RegisterContent } from "@/components/Form/RegisterContent";
 
 const Home: FC = () => {
 	const toast = useToast();
-	const [active, setDisabled] = useState<boolean>(false);
+
 	const formik = useFormik({
 		initialValues: {
 			who: "",
@@ -33,7 +34,7 @@ const Home: FC = () => {
 		validationSchema: mainPageValidationSchema,
 		onSubmit: (values) => {
 			// console.log(values);
-
+			console.log(formik);
 			instance
 				.get(`/index.php?module=API&method=Leads.addReport&format=json`, {
 					params: { ...values },
@@ -59,9 +60,11 @@ const Home: FC = () => {
 						description: "Что-то пошло не так, попробуйте позже",
 					});
 				});
+			formik.isSubmitting = false;
+			console.log(formik);
 		},
 	});
-	document.title = "Приведем заявки для автосервиса из Яндекс Директ";
+	document.title = "Автодилеры";
 	return (
 		<Fragment>
 			<Header />
@@ -88,90 +91,45 @@ const Home: FC = () => {
 						из Яндекс Директ!
 					</Heading>
 
-					<form onSubmit={formik.handleSubmit}>
-						<VStack
-							maxW={{ "2xl": "552px", xl: "476px", lg: "354px", base: "100%" }}
-							alignItems={"flex-start"}
-							spacing={"7"}
-							marginTop={"8"}>
-							<Heading
-								textAlign={"left"}
-								lineHeight='100%'
-								fontSize={{
-									base: "18px",
-									sm: "22px",
-									xl: "30px",
-									"2xl": "36px",
-								}}>
-								Получите медиаплан
-								<br />
-								для продвижения автобизнеса
-							</Heading>
-
-							<FormControl
-								// marginTop={"4"}
-								gap={"1rem"}
-								display={"flex"}
-								flexDirection={"column"}>
-								<TooltipError hasArrow label={formik.errors.who}>
-									<Box>
-										<Input
-											name='who'
-											size={{ sm: "lg", base: "md" }}
-											value={formik.values.who}
-											onChange={formik.handleChange}
-											color='#ffff'
-											borderColor={
-												formik.errors.who ? "red !important" : undefined
-											}
-											placeholder='Представьтесь'
-											type='text'
-										/>
-									</Box>
-								</TooltipError>
-								<TooltipError hasArrow label={formik.errors.phone}>
-									<Box>
-										<Input
-											as={MaskedInput}
-											mask={phoneMask}
-											name='phone'
-											size={{ sm: "lg", base: "md" }}
-											placeholder='Номер вашего телефона'
-											type='tel'
-											borderColor={
-												formik.errors.phone ? "red !important" : undefined
-											}
-											value={formik.values.phone}
-											onChange={formik.handleChange}
-										/>
-									</Box>
-								</TooltipError>
-
-								<Button
-									type='submit'
-									variant={"custom"}
-									size={{ sm: "lg", base: "md" }}
-									disabled={!active}
-									color={"#001549"}>
-									Получить
-								</Button>
-								<Text
-									fontSize={{ "2xl": "15px", base: "12px" }}
-									zIndex={"modal"}
-									opacity='0.8'>
-									Нажимая кнопку «Получить», вы соглашаетесь «
-									<Link
-										style={{
-											textDecoration: "underline",
-										}}
-										to='/privacy'>
-										Политикой конфиденциальности
-									</Link>
-									»
-								</Text>
-							</FormControl>
-						</VStack>
-					</form>
+					<VStack
+						maxW={{ "2xl": "552px", xl: "476px", lg: "354px", base: "100%" }}
+						alignItems={"flex-start"}
+						spacing={"7"}
+						marginTop={"8"}>
+						<Heading
+							textAlign={"left"}
+							lineHeight='100%'
+							fontSize={{
+								base: "18px",
+								sm: "22px",
+								xl: "30px",
+								"2xl": "36px",
+							}}>
+							Получите медиаплан
+							<br />
+							для продвижения автобизнеса
+						</Heading>
+						<RegisterContent
+							inputBorderColor=''
+							btnText='Получить'
+							button={{ variant: "custom", color: "#001549" }}
+						/>
+						<Text
+							fontSize={{ "2xl": "14px", base: "12px" }}
+							zIndex={"modal"}
+							marginTop={"2"}
+							opacity='0.8'>
+							Нажимая кнопку «Получить», вы соглашаетесь c «
+							<Link
+								style={{
+									textDecoration: "underline",
+								}}
+								to='/privacy'>
+								Политикой конфиденциальности
+							</Link>
+							»
+						</Text>
+					</VStack>
 				</Box>
 			</Container>
 			<Box

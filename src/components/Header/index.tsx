@@ -14,9 +14,19 @@ import logo from "@/assets/svg/logo.svg";
 import { ModalPage } from "../ModalPage";
 import { useNavigate } from "react-router";
 
+var start = new Date("August 19, 2023 03:00:00 UTC");
+var end = new Date("August 19, 2023 12:00:00 UTC");
+
 export const Header = () => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const navigate = useNavigate();
+
+	const normalizeDate = (value: number) => {
+		if (value < 10) {
+			return "0" + value;
+		}
+		return value;
+	};
 
 	return (
 		<>
@@ -58,7 +68,10 @@ export const Header = () => {
 								display={{ lg: "block", base: "none" }}>
 								ПН-ПТ
 								<br />
-								06:00-15:00 Мск
+								{normalizeDate(start.getHours())}:
+								{normalizeDate(start.getMinutes())}-
+								{normalizeDate(end.getHours())}:
+								{normalizeDate(end.getMinutes())}
 							</Text>
 						</Flex>
 						<Button

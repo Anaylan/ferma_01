@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const instance = axios.create({
-	baseURL: "//matomo",
+	baseURL: "//matomo.genshin-easy.ru",
 });

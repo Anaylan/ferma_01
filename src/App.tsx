@@ -1,7 +1,9 @@
-import { Box, Spinner } from "@chakra-ui/react";
-import { Fragment, Suspense } from "react";
+import { Box, Spinner, useDisclosure } from "@chakra-ui/react";
+import { Fragment, Suspense, useState } from "react";
 import { RouterProvider } from "react-router";
 import { router } from "./utils/router";
+import { QueryContextModal, StatusEnum } from "./utils/context/QueryContext";
+import { SendData } from "./components/Form/SendData";
 
 if (process.env.NODE_ENV == "production") {
 	var script = document.createElement("script");
@@ -23,6 +25,7 @@ if (process.env.NODE_ENV == "production") {
 }
 
 function App() {
+	const { isOpen, onOpen, onClose } = useDisclosure();
 	return (
 		<Fragment>
 			<Suspense
@@ -33,10 +36,17 @@ function App() {
 						alignItems={"center"}
 						justifyContent='center'
 						display='flex'>
-						<Spinner size={"xl"} color='white' />
+						<Spinner as={"span"} size={"xl"} color='white' />
 					</Box>
 				}>
-				<RouterProvider router={router} />
+				<QueryContextModal.Provider
+					value={{
+						isOpen,
+						onOpen,
+						onClose,
+					}}>
+					<RouterProvider router={router} />
+				</QueryContextModal.Provider>
 			</Suspense>
 		</Fragment>
 	);

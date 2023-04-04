@@ -5,7 +5,7 @@ const customVariant = defineStyle((props) => {
 	return {
 		background: "#FFFFFF",
 		_hover: {
-			background: "#E7CE1C",
+			background: "#E7CE1C !important",
 		},
 	};
 });
