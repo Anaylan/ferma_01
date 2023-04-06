@@ -1,70 +1,23 @@
-import { FC, Fragment, useState } from "react";
+import { FC, Fragment } from "react";
 
 import {
 	Box,
-	Button,
 	Container,
-	FormControl,
 	Heading,
-	Input,
 	VStack,
 	Text,
 	useToast,
 } from "@chakra-ui/react";
 
-import { Formik, useFormik } from "formik";
-import { phoneMask } from "@/lib/masks";
-import MaskedInput from "react-text-mask";
-import { mainPageValidationSchema } from "@/lib/validSchemas";
 import { Header } from "@/components/Header";
 import { Link } from "react-router-dom";
-import { TooltipError } from "@/components/Tooltip";
 
-import { instance } from "@/utils/axios";
 import { RegisterContent } from "@/components/Form/RegisterContent";
 
 const Home: FC = () => {
 	const toast = useToast();
 
-	const formik = useFormik({
-		initialValues: {
-			who: "",
-			phone: "",
-		},
-		validationSchema: mainPageValidationSchema,
-		onSubmit: (values) => {
-			// console.log(values);
-			console.log(formik);
-			instance
-				.get(`/index.php?module=API&method=Leads.addReport&format=json`, {
-					params: { ...values },
-				})
-				.then(({ data }) => {
-					console.log(data);
-					toast({
-						position: "bottom",
-						status: "success",
-						isClosable: true,
-						title: "Заявка успешно отправлена",
-						description: "Заявка успешно отправлена, Ожидайте звонка",
-					});
-					formik.resetForm();
-				})
-				.catch((er: string) => {
-					console.error(er);
-					toast({
-						position: "bottom",
-						status: "error",
-						isClosable: true,
-						title: "Возникла ошибка",
-						description: "Что-то пошло не так, попробуйте позже",
-					});
-				});
-			formik.isSubmitting = false;
-			console.log(formik);
-		},
-	});
-	document.title = "Автодилеры";
+	document.title = "Я.Директ для автосервисов";
 	return (
 		<Fragment>
 			<Header />
@@ -84,7 +37,7 @@ const Home: FC = () => {
 							xl: "54px",
 							"2xl": "80px",
 						}}>
-						Приведем заявки
+						Приведём заявки
 						<br />
 						для автосервиса
 						<br />

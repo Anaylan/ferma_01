@@ -1,5 +1,5 @@
 import axios from "axios";
 
 export const instance = axios.create({
-	baseURL: "//matomo.genshin-easy.ru",
+	baseURL: "//metrika.ferma-site.ru",
 });
